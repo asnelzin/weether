@@ -3,35 +3,85 @@
 
 {% block extra-js %}
     <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/_chartinit.js' %}"></script>
     <script>
-		var lineChartData = {
-            scaleGridLineWidth: 1,
-			labels : [{% for record in today_data %}"{{ record.datetime|date:"H:i" }}", {% endfor %}],
-			datasets : [
-				{
-					label: "Temperature",
-					fillColor : "rgba(220,220,220,0.2)",
-					strokeColor : "rgba(220,220,220,1)",
-					pointColor : "rgba(220,220,220,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(220,220,220,1)",
-					data : [{% for record in today_data %}{{ record.temperature }}, {% endfor %}]
-				}
-			]
+        var temperatureDailyData = [
+            {% for record in today_data %}
+                "{{ record.temperature }}",
+            {% endfor %}
+        ];
 
-		};
+        var pressureDailyData = [
+            {% for record in today_data %}
+                "{{ record.pressure }}",
+            {% endfor %}
+        ];
 
-	    window.onload = function(){
-	    	var ctx = document.getElementById("canvas").getContext("2d");
-	    	window.myLine = new Chart(ctx).Line(lineChartData, {
-	    		responsive: true
-	    	});
-	    }
+        var humidityDailyData = [
+            {% for record in today_data %}
+                "{{ record.humidity }}",
+            {% endfor %}
+        ];
 
+
+        window.onload = function () {
+            lineChartData.datasets[0].data = temperatureDailyData;
+            var ctx = document.getElementById("tempCanvas").getContext("2d");
+            window.myLine = new Chart(ctx).Line(lineChartData, {
+                responsive: true,
+                pointDot: false,
+                pointHitDetectionRadius: 0,
+                showTooltips: false
+            });
+
+            lineChartData.datasets[0].data = pressureDailyData;
+            ctx = document.getElementById("pressCanvas").getContext("2d");
+            window.myLine = new Chart(ctx).Line(lineChartData, {
+                responsive: true,
+                pointDot: false,
+                pointHitDetectionRadius: 0,
+                showTooltips: false
+            });
+
+            lineChartData.datasets[0].data = humidityDailyData;
+            ctx = document.getElementById("humidCanvas").getContext("2d");
+            window.myLine = new Chart(ctx).Line(lineChartData, {
+                responsive: true,
+                pointDot: false,
+                pointHitDetectionRadius: 0,
+                showTooltips: false
+            });
+
+        }
     </script>
 {% endblock %}
 
 {% block content %}
-    <canvas id="canvas">
+    <div class="row">
+        <h2>Today latest data at {{ latest.datetime|date:"H:i" }}</h2>
+        <ul class="todayData">
+            <li>
+                Temperature: {{ latest.temperature }}&deg; C
+            </li>
+            <li>
+                Pressure: {{ latest.pressure }} mbar
+            </li>
+            <li>
+                Humidity: {{ latest.humidity }}%
+            </li>
+        </ul>
+
+    </div>
+    <div class="row graph">
+        <h2>Temperature changing graph</h2>
+        <canvas id="tempCanvas">
+    </div>
+    <div class="row graph">
+        <h2>Pressure changing graph</h2>
+        <canvas id="pressCanvas">
+    </div>
+    <div class="row graph">
+        <h2>Humidity changing graph</h2>
+        <canvas id="humidCanvas">
+    </div>
 {% endblock %}
