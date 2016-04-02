@@ -102,8 +102,8 @@ def read_dht11():
 
 
 def main():
-    conn = psycopg2.connect(database='weether', user='postgres', password='',
-                            host='asnelzin.ru')
+    conn = psycopg2.connect(database='weether', user='', password='',
+                            host='')
     temperature, pressure = read_bmp180()
     humidity, _ = read_dht11()
 
