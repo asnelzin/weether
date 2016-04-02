@@ -1,7 +1,7 @@
 > Yet another weather site.
 
 This project include:
- - Raspberry Pi application for collection data;
+ - Raspberry Pi application for collecting data;
  - Django application for representation.
 
 ![weether](http://asnelzin.ru/weether.png)
