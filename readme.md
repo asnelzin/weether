@@ -4,7 +4,7 @@ This project include:
  - Raspberry Pi application for collecting data;
  - Django application for representation.
 
-![weether](http://asnelzin.ru/weether.png)
+![weether](http://asnelzin.ru/files/weether.png)
 
 ## License
 
